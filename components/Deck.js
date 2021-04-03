@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { useFocusEffect, useIsFocused } from '@react-navigation/native'
 import DeckInfo from './DeckInfo'
-import { getDecks, clearLocalNotification, setLocalNotification  } from '../utils/helpers'
+import { getDecks } from '../utils/helpers'
 
 function Deck ({ route, navigation }) {
     const [data, setData] = useState('')
@@ -24,9 +24,6 @@ function Deck ({ route, navigation }) {
   	}, [isFocused])
 
   	const onQuizStart = function() {
-  		clearLocalNotification()
-			.then(setLocalNotification())
-
   		navigation.navigate('Quiz', {
         	title: route.params.title
         })

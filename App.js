@@ -36,11 +36,11 @@ const TabNav = () => (
         let icon
         if (route.name === "Decks") {
           icon = (
-            <MaterialCommunityIcons name="cards-outline" size={Platform.OS === "ios" ? 36 : 26} color={color} />
+            <MaterialCommunityIcons name="cards-outline" size={Platform.OS === "ios" ? 32 : 26} color={color} />
           )
         } else if (route.name === "New Deck") {
           icon = (
-            <MaterialCommunityIcons name="card-plus-outline" size={Platform.OS === "ios" ? 36 : 26} color={color} />
+            <MaterialCommunityIcons name="card-plus-outline" size={Platform.OS === "ios" ? 32 : 26} color={color} />
           )
         } 
         return icon;
@@ -51,7 +51,8 @@ const TabNav = () => (
       activeTintColor: Platform.OS === "ios" ? purple : "white",
       showIcon: true,
       style: {
-        height: 68,
+        height: 80,
+        padding: 8,
         backgroundColor: Platform.OS === "ios" ? "white" : purple,
         shadowColor: "rgba(0, 0, 0, 0.24)",
         shadowOffset: {

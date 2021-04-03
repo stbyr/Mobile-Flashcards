@@ -35,6 +35,10 @@ Press a to open Android device or emulator, or i to open iOS emulator.
 
 This project was bootstrapped with [Create React Native App](https://github.com/expo/create-react-native-app). 
 
+## Tested Platforms
+
+This app has been tested on iOS 14.4 and Android 11.0.
+
 ## License
 
 All code for this application was written by Stefanie Beyer, Berlin 2021.

@@ -13,8 +13,10 @@ class NewDeck extends React.Component {
     }))
   };
 
-  navigate = () => {
-    this.props.navigation.navigate('Decks')
+  navigate = (title) => {
+    this.props.navigation.navigate('Deck', {
+      title: title 
+    })
   };
 
   onSubmit = () => {

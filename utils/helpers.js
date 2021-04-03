@@ -29,7 +29,7 @@ export function saveDeckTitle(title, navigateFunction) {
 				AsyncStorage.setItem(FLASHCARDS_KEY, JSON.stringify(firstData))
 			}
 		})
-		.then(() => navigateFunction())
+		.then(() => navigateFunction(title))
 }
 
 export function addCardToDeck(title, question, answer, navigateFunction) {

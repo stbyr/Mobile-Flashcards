@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { getDeck } from '../utils/helpers'
+import { getDeck, clearLocalNotification, setLocalNotification } from '../utils/helpers'
 import QuizQuestion from './QuizQuestion'
 import QuizAnswer from './QuizAnswer'
 import Score from './Score'
@@ -47,18 +47,24 @@ class Quiz extends React.Component {
   	}))
   };
 
+  clearAndSetNotification = () => {
+    clearLocalNotification()
+      .then(setLocalNotification())
+    };
+
   render() {
     const { showQuestion, numQuestionsAnswered, score, data } = this.state
 
     if (data && numQuestionsAnswered === data.questions.length) {
-    	return (
+    	this.clearAndSetNotification()
+      return (
     		<Score score={score} numQuestions={data.questions.length} reset={this.reset} title={data.title} />
     	);
     }
 
     return (
       <View style={styles.container}>
-        <Text style={styles.score}>{numQuestionsAnswered} / { data ? data.questions.length : null}</Text>
+        <Text style={styles.score}>{numQuestionsAnswered + 1} / { data ? data.questions.length : null}</Text>
         {showQuestion 
         	? <View> 
         		<QuizQuestion data={data} numQuestionsAnswered={numQuestionsAnswered} /> 
