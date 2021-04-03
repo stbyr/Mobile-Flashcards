@@ -2,11 +2,14 @@
   "name": "MobileFlashcards",
   "displayName": "MobileFlashcards",
   "expo": {
+    "orientation": "portrait",
     "name": "MobileFlashcards",
+    "description": "An app for practicing with flashcards on your phone",
     "slug": "MobileFlashcards",
     "version": "1.0.0",
+    "icon": "./utils/Flashcards.png",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
   }
 }

@@ -1,22 +1,37 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native'
+import { saveDeckTitle } from '../utils/helpers'
 
 class NewDeck extends React.Component {
   state = {
-    input: "" 
+    input: ''
   }
 
   handleTextChange = (input) => {
     this.setState(() => ({
       input 
     }))
-  }
+  };
+
+  navigate = () => {
+    this.props.navigation.navigate('Decks')
+  };
+
+  onSubmit = () => {
+    if (!this.state.input) {
+      return alert('Please enter a deck title');
+    }
+    saveDeckTitle(this.state.input, this.navigate) 
+    this.setState(() => ({
+      input: ''
+    }))
+  };
 
   render() {
     const { input } = this.state
 
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
         <Text style={styles.text}>What is the title of your new deck?</Text>
         <TextInput 
           style={styles.input}
@@ -24,10 +39,10 @@ class NewDeck extends React.Component {
           value={input}
           placeholder="Deck Title"
         />
-        <TouchableOpacity style={styles.btn} onPress={() => console.log('Submit')}>
+        <TouchableOpacity style={styles.btn} onPress={this.onSubmit}>
           <Text style={styles.btnText}>Submit</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -59,12 +74,12 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: 'grey',
-    width: 370,
+    width: 350,
     height: 50,
     borderRadius: 5,
     padding: 14,
     fontSize: 16,
   }
-});
+})
 
 export default NewDeck

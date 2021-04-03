@@ -1,48 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
+import { getDecks } from '../utils/helpers'
 import DeckInfo from './DeckInfo'
 
-const data = {
-  React: {
-    title: 'React',
-    questions: [
-      {
-        question: 'What is React?',
-        answer: 'A library for managing user interfaces'
-      },
-      {
-        question: 'Where do you make Ajax requests in React?',
-        answer: 'The componentDidMount lifecycle event'
-      }
-    ]
-  },
-  JavaScript: {
-    title: 'JavaScript',
-    questions: [
-      {
-        question: 'What is a closure?',
-        answer: 'The combination of a function and the lexical environment within which that function was declared.'
-      }
-    ]
-  }
-}
+const DeckList = props => {
+  const [data, setData] = useState('')
+  const navigation = useNavigation()
+  const isFocused = useIsFocused()
 
-class DeckList extends React.Component {
-  renderItem = ({ item }) => {
-  	return <DeckInfo title={item.title} navigation={this.props.navigation} /> 
+  useEffect(() => {
+  	const unsubscribe = navigation.addListener('focus', () => {
+     	getDecks().then(newData => setData(data => newData))
+    })
+
+  	getDecks().then(newData => setData(data => newData))
+
+    return unsubscribe;
+
+  }, [navigation])
+
+  const renderItem = ({ item }) => {
+  	return <DeckInfo title={item.title} navigation={navigation} border={true} />; 
   }
 
-  render() {
-    return (
-      <View style={{flex: 1}}>
-      	<FlatList 
-      		data={Object.values(data)}
-      		renderItem={this.renderItem}
-      		keyExtractor={item => item.title}
-      	/>
-      </View>
-    );
-  }
+  return (
+    <View style={{flex: 1}}>
+    	<FlatList 
+    		data={ data ? Object.values(data) : null }
+    		renderItem={renderItem}
+    		keyExtractor={item => item.title}
+    	/>
+    </View>
+  );
 }
 
 export default DeckList

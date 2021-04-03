@@ -1,100 +1,86 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { getDeck } from '../utils/helpers'
 import QuizQuestion from './QuizQuestion'
 import QuizAnswer from './QuizAnswer'
 import Score from './Score'
-
-const data = {
-  React: {
-    title: 'React',
-    questions: [
-      {
-        question: 'What is React?',
-        answer: 'A library for managing user interfaces'
-      },
-      {
-        question: 'Where do you make Ajax requests in React?',
-        answer: 'The componentDidMount lifecycle event'
-      }
-    ]
-  },
-  JavaScript: {
-    title: 'JavaScript',
-    questions: [
-      {
-        question: 'What is a closure?',
-        answer: 'The combination of a function and the lexical environment within which that function was declared.'
-      }
-    ]
-  }
-}
 
 class Quiz extends React.Component {
   state = {
   	showQuestion: true,
   	score: 0,
   	numQuestionsAnswered: 0,
+  	data: '',
+  }
+
+  componentDidMount() {
+  	getDeck(this.props.route.params.title).then(data => this.setState(() => ({
+  		data 
+  	})))
   }
 
   toggleShowQuestion = () => {
   	this.setState((state) => ({
   		showQuestion: !state.showQuestion
   	}))
-  }
+  };
 
   correct = () => {
   	this.setState((state) => ({
   		score: state.score + 1,
-  		numQuestionsAnswered: state.numQuestionsAnswered + 1
+  		numQuestionsAnswered: state.numQuestionsAnswered + 1,
+  		showQuestion: true,
   	}))
-  }
+  };
 
   incorrect = () => {
   	this.setState((state) => ({
-  		numQuestionsAnswered: state.numQuestionsAnswered + 1
+  		numQuestionsAnswered: state.numQuestionsAnswered + 1,
+  		showQuestion: true,
   	}))
-  }
+  };
 
   reset = () => {
   	this.setState((state) => ({
-  		numQuestionsAnswered: 0
+  		numQuestionsAnswered: 0,
+  		score: 0,
   	}))
-  }
+  };
 
   render() {
-    const { showQuestion, numQuestionsAnswered, score } = this.state
+    const { showQuestion, numQuestionsAnswered, score, data } = this.state
 
-    if (numQuestionsAnswered === data['React'].questions.length) {
+    if (data && numQuestionsAnswered === data.questions.length) {
     	return (
-    		<Score score={score} numQuestions={data['React'].questions.length} reset={this.reset} />
-    	)
+    		<Score score={score} numQuestions={data.questions.length} reset={this.reset} title={data.title} />
+    	);
     }
 
     return (
       <View style={styles.container}>
-        <Text style={styles.score}>{numQuestionsAnswered} / {data['React'].questions.length}</Text>
+        <Text style={styles.score}>{numQuestionsAnswered} / { data ? data.questions.length : null}</Text>
         {showQuestion 
         	? <View> 
-        		<QuizQuestion /> 
+        		<QuizQuestion data={data} numQuestionsAnswered={numQuestionsAnswered} /> 
         	  	<TouchableOpacity onPress={this.toggleShowQuestion}>
         	  		<Text style={styles.text}>Answer</Text>
         	  	</TouchableOpacity>
         	  </View>
         	: <View>
-        		<QuizAnswer />
+        		<QuizAnswer data={data} numQuestionsAnswered={numQuestionsAnswered} />
         	  	<TouchableOpacity onPress={this.toggleShowQuestion}>
         	  		<Text style={styles.text}>Question</Text>
         	  	</TouchableOpacity>
         	  </View>
         }
         <TouchableOpacity 
-        	style={[styles.btn, {backgroundColor: 'green'}]}
+        	style={[styles.btn, {backgroundColor: "green"}]}
         	onPress={this.correct}
         >
         	<Text style={styles.btnText}>Correct</Text>
         </TouchableOpacity>
         <TouchableOpacity 
-        	style={[styles.btn, {backgroundColor: 'red'}]}
+        	style={[styles.btn, {backgroundColor: "red"}]}
         	onPress={this.incorrect}
         >
         	<Text style={styles.btnText}>Incorrect</Text>
@@ -106,30 +92,30 @@ class Quiz extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'white',
-    },
-    text: {
-    	fontSize: 22,
-    	textAlign: 'center',
-    	padding: 10,
-    	marginBottom: 80,
-    	color: 'red'
-    },
-    btn: {
-      padding: 14,
-      paddingLeft: 26,
-      paddingRight: 26,
-      borderRadius: 5,
-      marginBottom: 30,
-      minWidth: 150,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  },
+  text: {
+  	fontSize: 22,
+  	textAlign: 'center',
+  	padding: 10,
+  	marginBottom: 80,
+  	color: 'red'
+  },
+  btn: {
+    padding: 14,
+    paddingLeft: 26,
+    paddingRight: 26,
+    borderRadius: 5,
+    marginBottom: 30,
+    minWidth: 150,
   },
   btnText: {
-      color: 'white',
-      fontSize: 20,
-      textAlign: 'center'
+    color: 'white',
+    fontSize: 20,
+    textAlign: 'center'
   },
   score: {
   	color: 'grey',
@@ -138,6 +124,6 @@ const styles = StyleSheet.create({
   	left: 16,
   	fontSize: 22,
   }
-});
+})
 
 export default Quiz

@@ -1,14 +1,15 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-class QuizQuestion extends React.Component {
-  render() {
-    return (
-      <View>
-        <Text style={styles.text}>Does React Native work with Android?</Text>
-      </View>
-    );
-  }
+function QuizQuestion (props) {
+  const { data, numQuestionsAnswered } = props
+  const numQuestions = data ? data.questions.length : null
+
+  return (
+    <View>
+      <Text style={styles.text}>{data ? data.questions[numQuestionsAnswered].question : null}</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -19,6 +20,6 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     paddingLeft: 30,
   }
-});
+})
 
 export default QuizQuestion
