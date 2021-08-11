@@ -31,6 +31,12 @@ yarn start
 
 Press a to open Android device or emulator, or i to open iOS emulator.
 
+## Video demonstration
+
+Click here for a short video demonstration of the app:
+
+[![Watch the video](https://img.youtube.com/vi/EYawzqmghUo/maxresdefault.jpg)](https://www.youtube.com/watch?v=EYawzqmghUo)
+
 ## Create React Native App 
 
 This project was bootstrapped with [Create React Native App](https://github.com/expo/create-react-native-app). 
